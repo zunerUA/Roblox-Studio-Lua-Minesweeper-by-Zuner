@@ -1,7 +1,7 @@
 local Configuration = {}
 
 -- amount of mines generated 
-Configuration.MINES = 50
+Configuration.MINES = 10
 -- not reccomened to put more than 
 Configuration.GRID_SIZE = Vector2.new(9, 9)
 -- tags, doesn't affect the gameplay
