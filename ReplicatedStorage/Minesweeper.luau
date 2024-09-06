@@ -36,22 +36,16 @@ Minesweeper.__index = Minesweeper
 -- сonstructors
 function Minesweeper.new(size, mines, seed)
     local self = setmetatable({}, Minesweeper)
-
     self.gameOver = false
     self.isWin = false
-
     self.board = Instance.new("Folder", workspace)
     self.board.Name = "Minesweeper"
-
     self.size = size
     self.mines = mines
-    
     self.board:SetAttribute("size", Vector2.new(size.X, size.Y))
-
     if seed then
         math.randomseed(seed)
     end
-
     self:_createBoard()
 
     return self
@@ -65,12 +59,10 @@ end
 function Minesweeper:restart()
     self.gameOver = false
     self.isWin = false
-    
     self.board:ClearAllChildren()
     for _, tag: string in CollectionService:GetTags(self.board) do
         self.board:RemoveTag(tag)
     end
-    
     self:_createBoard()
 end
 function Minesweeper:tagMine(cell)
@@ -87,20 +79,16 @@ end
 function Minesweeper:makeMove(cell)
     if self.isWin or self.gameOver then return end
     if not next(CollectionService:GetTagged(Configuration.TAGS.REVEALED)) then self:_placeMines(cell) end
-    
     local position = cell:GetAttribute(Configuration.ATTRIBUTES.CELL_POSITION)
     local mines = self:_countMines(cell)
     if cell:HasTag(Configuration.TAGS.MINE) then
         self:revealAllMines()
-        
         self.gameOver = true
-        
         self.board:AddTag(Configuration.TAGS.GAME_OVER)
         
         task.delay(Configuration.RESTART_LOOP, function()
             self:restart()
         end)
-        
         return
     end
     cell:AddTag(Configuration.TAGS.REVEALED)
@@ -119,9 +107,7 @@ function Minesweeper:makeMove(cell)
     end
     if self:_isWin() then
         self.board:AddTag(Configuration.TAGS.WIN)
-        
         self.isWin = true
-        
         task.delay(Configuration.RESTART_LOOP, function()
             self:restart()
         end)
@@ -135,7 +121,6 @@ function Minesweeper:_createBoard()
         local yOffset = offset
         for j = 1, self.size.Y do
             self:_createCell(yOffset, Vector2.new(i, j))
-
             yOffset += Vector3.new(0, 0, Configuration.CELL_SIZE.Z+Configuration.PADDING)
         end
         offset += Vector3.new(Configuration.CELL_SIZE.X+Configuration.PADDING, 0, 0)
@@ -183,41 +168,29 @@ function Minesweeper:_placeMines(startingCell)
 end
 function Minesweeper:_addLabel(cell, number)
     local SurfaceGui = Instance.new("SurfaceGui", cell)
-    
     SurfaceGui.Face = Enum.NormalId.Top
 
     local TextLabel = Instance.new("TextLabel", SurfaceGui)
-    
     TextLabel.Rotation = 90
-    
     TextLabel.FontFace = Font.fromName("PressStart2P")
     TextLabel.Size = UDim2.fromScale(1, 1)
-    
     TextLabel.BackgroundTransparency = 1
     TextLabel.BackgroundColor3 = Color3.new(0, 0, 0)
     TextLabel.TextColor3 = Color3.new(1, 1, 1)
-
     TextLabel.RichText = true
     TextLabel.TextScaled = true
-    
     TextLabel.Text = `<stroke color="#000000" thickness="3">{number}</stroke>`
 end
 function Minesweeper:_createCell(position, gridPosition)
     local part = Instance.new("Part", self.board)
 
     part:SetAttribute(Configuration.ATTRIBUTES.CELL_POSITION, gridPosition)
-
     part.Name = gridPosition.X .. gridPosition.Y
-
     part.Color = Configuration.COLORS.UNKNOWN
-
     part.Size = Configuration.CELL_SIZE
     part.Position = position
-
     part.Anchored = true
-
     part.CanCollide = false
     part.CastShadow = false
 end
-
 return Minesweeper
