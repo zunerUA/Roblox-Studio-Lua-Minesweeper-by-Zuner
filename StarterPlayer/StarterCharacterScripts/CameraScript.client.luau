@@ -90,7 +90,7 @@ RunService.RenderStepped:Connect(function(deltaTime: number)
             local minutes = (duration/60)%60
             local hours = (duration/3600) % 12
             
-            WinScreen.Time.Text = "Time player: " .. string.format("%02dh:%02dm:%02ds", hours, minutes, seconds)
+            WinScreen.Time.Text = "Time played: " .. string.format("%02dh:%02dm:%02ds", hours, minutes, seconds)
             hide()
         end
     elseif Minesweeper:HasTag(Configuration.TAGS.GAME_OVER) then
