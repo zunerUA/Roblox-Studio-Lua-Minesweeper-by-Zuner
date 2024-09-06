@@ -67,7 +67,7 @@ function Minesweeper:restart()
     self.isWin = false
     
     self.board:ClearAllChildren()
-    for _, tag: string in CollectionService:GetTagged(self.board) do
+    for _, tag: string in CollectionService:GetTags(self.board) do
         self.board:RemoveTag(tag)
     end
     
@@ -104,7 +104,7 @@ function Minesweeper:makeMove(cell)
         return
     end
     cell:AddTag(Configuration.TAGS.REVEALED)
-    
+    cell:RemoveTag(Configuration.TAGS.MINE_TAGGED)
     if mines > 0 then
         self:_addLabel(cell, mines)
     elseif mines == 0 then
