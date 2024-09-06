@@ -22,7 +22,7 @@ RunService.RenderStepped:Connect(function(deltaTime: number)
     
     if not board then return end
     if not target or not target:IsDescendantOf(board) then cell = nil return end
-    if target:HasTag("Revealed") then return end
+    if target:HasTag(Configuration.TAGS.REVEALED) then cell = nil return end
     
     
     cell = target
