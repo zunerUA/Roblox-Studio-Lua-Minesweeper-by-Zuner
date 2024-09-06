@@ -54,15 +54,9 @@ local timePlaying
 
 camera.CameraType = Enum.CameraType.Scriptable
 
-local function updateMinesTitle()
-    ScreenGui.Mines.Text = `Mines: {Configuration.MINES}`
-end
-updateMinesTitle()
-
 local function hide()
     task.delay(Configuration.RESTART_LOOP, function()
         WinScreen.Enabled = false
-        updateMinesTitle()
     end)
 end
 
@@ -93,8 +87,6 @@ RunService.RenderStepped:Connect(function(deltaTime: number)
             WinScreen.Time.Text = "Time played: " .. string.format("%02dh:%02dm:%02ds", hours, minutes, seconds)
             hide()
         end
-    elseif Minesweeper:HasTag(Configuration.TAGS.GAME_OVER) then
-        ScreenGui.Mines.Text = `Mines: {Configuration.MINES}`
     end
     
     local part1, part2 = Minesweeper:FindFirstChild("11"), Minesweeper:FindFirstChild(size.X .. size.Y)
